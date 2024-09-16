@@ -10,13 +10,7 @@ fn input_user_to_vec<T: std::str::FromStr>() -> Vec<T> {
         .collect()
 }
 fn factorial(mut n : u128 ) -> u128{
-
-    let mut result = 1;
-    for i in 1..n+1{
-        result = result *i;
-    }
-
-    return result
+    (1..=n).product()
 }
 fn main() {
     let n = input_user_to_vec()[0];
