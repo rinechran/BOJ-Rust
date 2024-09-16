@@ -1,7 +1,7 @@
 use std::collections::VecDeque;
 use std::io::{self, stdin};
 
-fn input_user_to_vec() -> Vec<i32> {
+fn input_user_to_vec() -> Vec<usize> {
     let mut input = String::new();
     stdin().read_line(&mut input).unwrap();
     input
@@ -10,70 +10,57 @@ fn input_user_to_vec() -> Vec<i32> {
         .collect()
 }
 
-#[derive(Clone)]
-struct Tower {
-    build_time: i32,
-}
 
 struct Center {
-    towers: Vec<Tower>,
+    towers: Vec<usize>,
     adj_list: Vec<Vec<usize>>,
-    indegree: Vec<usize>,
+    in_degree: Vec<usize>,
 }
 
 impl Center {
     fn new(tower_count: usize) -> Center {
         Center {
-            towers: vec![
-                Tower {
-                    build_time: 0,
-                };
-                tower_count
-            ],
+            towers: vec![0; tower_count],
             adj_list: vec![Vec::new(); tower_count],
-            indegree: vec![0; tower_count],
+            in_degree: vec![0; tower_count],
         }
     }
-
-    fn set_tower_time(&mut self, index: usize, time: i32) {
-        self.towers[index].build_time = time;
+    fn set_tower_time(&mut self, index: usize, time: usize) {
+        self.towers[index] = time;
     }
-
-    fn add_dependency(&mut self, pre_tower: usize, post_tower: usize) {
-        self.adj_list[pre_tower].push(post_tower);
-        self.indegree[post_tower] += 1;
+    fn add_dependency(&mut self, pre : usize ,post :usize){
+        self.adj_list[pre].push(post);
+        self.in_degree[post]+=1;
     }
-
-    fn calculate_min_time(&self, target: usize) -> i32 {
-        let mut build_times = vec![0; self.towers.len()];
-        let mut indegree = self.indegree.clone();
+    fn calculate_min_time(&self,target : usize) -> usize{
         let mut queue = VecDeque::new();
+        let mut build_times= self.towers.clone();
+        let mut in_degree = self.in_degree.clone();
 
-        for (i, tower) in self.towers.iter().enumerate() {
-            build_times[i] = tower.build_time;
-        }
 
-        for (i, &deg) in indegree.iter().enumerate() {
+        for (i, &deg) in self.in_degree.iter().enumerate() {
             if deg == 0 {
                 queue.push_back(i);
             }
         }
 
-        while let Some(current) = queue.pop_front() {
+        while let Some(current) = queue.pop_front(){
             let current_time = build_times[current];
 
-            for &next in &self.adj_list[current] {
-                indegree[next] -= 1;
-                if build_times[next] < current_time + self.towers[next].build_time {
-                    build_times[next] = current_time + self.towers[next].build_time;
+            for &next in &self.adj_list[current]{
+                in_degree[next] -= 1;
+                if build_times[next] < current_time + self.towers[next] {
+                    build_times[next] = current_time + self.towers[next];
                 }
-                if indegree[next] == 0 {
+                if in_degree[next] == 0 {
                     queue.push_back(next);
                 }
             }
+
         }
 
         build_times[target]
+
     }
 }
 
@@ -102,7 +89,7 @@ fn run() {
 }
 
 fn main() {
-    let n: i32 = input_user_to_vec()[0];
+    let n: usize = input_user_to_vec()[0];
 
     for _ in 0..n {
         run();
