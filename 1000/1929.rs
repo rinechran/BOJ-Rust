@@ -1,3 +1,4 @@
+use std::collections::VecDeque;
 use std::io::{self, stdin};
 
 fn input_user_to_vec() -> Vec<usize> {
@@ -9,30 +10,28 @@ fn input_user_to_vec() -> Vec<usize> {
         .collect()
 }
 
-fn run(n: usize, m: usize) {
+fn run(n : usize , m : usize){
     let mut vec: Vec<bool> = vec![true; m + 1];
 
     if m >= 2 {
         vec[0] = false;
         vec[1] = false;
     }
-
-    for i in 2..=(m as f64).sqrt() as usize {
+    
+    for i in 2..=m {
         if vec[i] == true {
             for j in (i*i..=m).step_by(i) {
                 vec[j] = false;
             }
         }
     }
-
     for i in n..=m {
         if vec[i] == true {
-            println!("{}", i);
+            println!("{}",i);
         }
     }
 }
-
 fn main() {
     let row = input_user_to_vec();
-    run(row[0], row[1]);
+    run(row[0],row[1]);
 }
