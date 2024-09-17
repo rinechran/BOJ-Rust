@@ -1,0 +1,32 @@
+use std::collections::VecDeque;
+use std::io::{self, stdin};
+
+fn input_user_to_vec() -> Vec<usize> {
+    let mut input = String::new();
+    stdin().read_line(&mut input).unwrap();
+    input
+        .split_whitespace()
+        .filter_map(|s| s.parse().ok())
+        .collect()
+}
+
+fn run(n : usize , m : usize){
+    let mut vec: Vec<bool> = vec![true; m + 1];
+
+    for i in 2..=m {
+        if vec[i] == true {
+            for j in (i*i..=m).step_by(i) {
+                vec[j] = false;
+            }
+        }
+    }
+    for i in n..=m {
+        if vec[i] == true {
+            println!("{}",i);
+        }
+    }
+}
+fn main() {
+    let row = input_user_to_vec();
+    run(row[0],row[1]);
+}
