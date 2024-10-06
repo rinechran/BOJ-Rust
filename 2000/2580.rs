@@ -88,7 +88,7 @@ fn main() {
 
     for i in 0..9{
         let row : Vec<i32> = input_user_to_vec();
-        for j in 0..9{
+        for j in 0..SIZE{
             board[i][j] = row[j];
         }
     }
