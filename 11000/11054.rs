@@ -26,7 +26,7 @@ fn main() {
         }
     }
     for i in (0..count).rev() {
-        for j in (i+1)..count {
+        for j in i..count {
             if input[j] < input[i] {
                 des_dp[i] = max(des_dp[i], des_dp[j] + 1);
             }
