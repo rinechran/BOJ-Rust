@@ -60,14 +60,15 @@ fn main() {
     let map_size = row[0];
     let edge_count = row[1];
 
-    let graph = initialize_graph(map_size, edge_count);
+    let graph = initialize_graph(edge_count);
     let results = calculate_and_sort_results(&graph, map_size);
 
     let max_val = results[0].0;
-    for (count, node) in results {
-        if count != max_val {
-            break;
-        }
+    let result: Vec<_> = results.iter()
+        .filter(|&(s, _)| *s == max_val)
+        .collect();
+
+    for &(_, node) in &result {
         print!("{} ", node);
     }
 }
