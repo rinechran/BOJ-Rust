@@ -23,5 +23,5 @@ fn main() {
         })
         .collect();
 
-    println!("{}", transform_input);
+    print!("{}", transform_input);
 }
